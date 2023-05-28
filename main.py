@@ -4,6 +4,7 @@ from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score
 from tkinter import Tk
+from sklearn.impute import SimpleImputer
 from tkinter.filedialog import askopenfilename
 
 
@@ -19,6 +20,9 @@ def load_and_correct_data(file_path):
             mapping[column] = {value: i for i, value in enumerate(unique_values)}
             # Replace the non-numeric values with numeric values
             data[column] = data[column].map(mapping[column])
+        else:
+            imputer = SimpleImputer(strategy="mean")  # or "median", "most_frequent", etc.
+            data[column] = imputer.fit_transform(data[[column]])
 
     return data,mapping
 
